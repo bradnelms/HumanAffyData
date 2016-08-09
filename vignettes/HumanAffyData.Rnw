@@ -1,0 +1,100 @@
+%\VignetteIndexEntry{Intro to the HumanAffyData package}
+%\VignettePackage{HumanAffyData}
+%\VignetteEngine{utils::Sweave}
+
+\documentclass{article}
+
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex()
+@ 
+
+\newcommand{\exitem}[3]{%
+  \item \texttt{\textbackslash#1\{#2\}} #3 \csname#1\endcsname{#2}.%
+}
+
+\title{Intro to the \Biocpkg{HumanAffyData} experimental data package}
+\author{Brad Nelms}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+
+%---------------------------------------------------------
+\section{Introduction}
+%---------------------------------------------------------
+
+\Biocpkg{HumanAffyData} is a re-analysis of human gene expression data generated on the Affymetrix HG\_U133PlusV2 (EH176) and Affymetrix HG\_U133A (EH177) platforms, provide as \Rclass{ExpressionSet} objects. The original data were normalized using robust multiarray averaging (RMA) to obtain an integrated gene expression atlas across diverse biological sample types and conditions. The entire compendia comprisee 9395 arrays for EH176 and 5372 arrays for EH177. It is intended to be used as a starting point for gene co-expression analysis, or as a resource to quickly examine where a gene is expressed from within the R{} environment.
+
+EH176: the original data were gathered by \cite{Engreitz} and normalized using robust multiarray averaging (RMA). The \Rcode{phenoData} of the \Rclass{ExpressionSet} object contains the title and description of the source entries on GEO.
+
+EH177: the original data were gathered by \cite{Lukk} and normalized using robust multiarray averaging (RMA). \cite{Lukk} manually curated the dataset to establish uniform phenotypic information for each sample, which is available in the \Rcode{phenoData} of the \Rclass{ExpressionSet} object. This data is accesible on ArrayExpress under accession \href{https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-62/}{E-MTAB-62}. The RMA-normalized expression values were then adjusted to reduce the influence of technical bias (i.e. variation in hybridization conditions or starting material) using the R package \Rpackage{bias 0.0.3} \cite{bias}. Finally, probesets were mapped to Entrez gene identifiers using the \Bioconductor{} annotation package \Biocpkg{hgu133a.db}, and values for probesets mapping to the same gene were averaged to produce a single expression measurement for each gene.
+
+
+%---------------------------------------------------------
+\section{Dataset overview}
+%---------------------------------------------------------
+
+First, access the HumanAffyData from ExperimentHub:
+
+<<>>=
+library(ExperimentHub)
+hub <- ExperimentHub()
+x <- query(hub, "HumanAffyData")
+x
+@
+
+Data can then be extracted using:
+
+<<>>=
+E.MTAB.62 <- x[["EH177"]]
+@
+
+This downloads the EH177 dataset, which contains an \Rclass{ExpressionSet} object containing expression data from ArrayExpress accession E-MTAB-62:
+
+<<>>=
+E.MTAB.62
+@
+
+The experiment data can be extracted using the \Rcode{exprs} function:
+
+<<>>=
+data <- exprs(E.MTAB.62)
+dim(data)
+data[1:5,1:5]
+@
+
+This results in a matrix of expression data with the column names indicating the Array Data File name of each sample, and the rownames providing the human Entrez IDs of each gene.
+
+Similarly, the phenotype data can be extracted using the \Rcode{pData} function:
+
+<<>>=
+pDat <- pData(E.MTAB.62)
+print(summary(pDat))
+@
+
+The pheontypic data contains several "meta groups", labed as "Groups\_4", "Groups\_15", and "Groups\_369". These are curated labels that group samples from a particular tissue, cell line, disease status, etc. The meta groups are explained further in \cite{Lukk}. \cite{Lukk} also discuss a "96 meta group" category, which is simply any members of the "369 meta groups" that contain at least 10 samples. The "96 meta groups" category can be re-created from the phenotypic data as follows:
+
+<<>>=
+Groups_96 <- as.character(pDat$Groups_369)
+Groups_96[Groups_96 %in% names(which(table(pDat$Groups_96) < 10))] <- ''
+pDat$Groups_96 <- as.factor(Groups_96)
+@
+
+
+
+%---------------------------------------------------------
+\section{Citation}
+%---------------------------------------------------------
+
+<<>>=
+citation("HumanAffyData")
+@
+
+
+\bibliography{bibliography}
+
+\end{document}
+

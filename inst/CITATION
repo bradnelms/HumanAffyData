@@ -1,0 +1,36 @@
+citHeader("Please cite Engreitz, et al. (2010) for the EH176 dataset and Lukk, et al. (2010) for the EH177 dataset:")
+
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+ bibtype="Article",
+ title="Independent component analysis: mining microarray data for fundamental human gene expression modules",
+ journal="J Biomed Inform",
+ volume= "43",
+ number="6",
+ pages="932-944",
+ year="2010",
+ author=personList(as.person("JM Engreitz"), as.person("BJ Daigle Jr"), as.person("JJ Marshall"), as.person("RB Altman")),
+ textVersion="Engreitz JM, Daigle BJ Jr, Marshall JJ, Altman RB. Independent component analysis: mining microarray data for fundamental human gene expression modules. J Biomed Inform 2010, 43(6):932-44." )
+
+bibentry(
+ bibtype="Article",
+ title="A global map of human gene expression",
+ journal="Nature Biotechnology",
+ volume= "28",
+ number="4",
+ pages="322-324",
+ year="2010",
+ author=personList(as.person("M Lukk"), as.person("M Kapushesky"), as.person("J Nikkila"), as.person("H Parkinson"), as.person("A Goncalves"), as.person("W Huber"), as.person("E Ukkonen"), as.person("A Brazma")),
+ textVersion="Lukk M, Kapushesky M, Nikkila J, Parkinson H, Goncalves A, Huber W, Ukkonen E, Brazma A. A global map of human gene expression. Nat Biotechnol 2010, 28(4):322-324." )
+
+bibentry(bibtype="Manual",
+         title="HumanAffyData experimental data package",
+         author=person("Brad Nelms"),
+         year=year,
+         note=note,
+         url="https://www.bioconductor.org/packages/release/data/experiment/html/HumanAffyData.html")
+
+
+

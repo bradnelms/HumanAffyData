@@ -1,0 +1,26 @@
+\name{E_MTAB_62}
+\alias{E_MTAB_62}
+\docType{data}
+\title{
+	ArrayExpression accession data E-MTAB-62 as an ExpressionSet object.
+}
+\description{
+	Re-analysis of human gene expression data generated on the Affymetrix HG_U133A platform. The original data were normalized using robust multiarray averaging (RMA) to obtain an integrated gene expression atlas across diverse biological sample types and conditions. Normalized data was further processed using the R package bias 0.0.3 to reduce the impace of technical bias on the dataset. The entire compendium comprises 5372 arrays.
+}
+\usage{data(E_MTAB_62)}
+\format{
+	The data is provided as an 'exprSet' object.
+}
+\source{
+	Lukk M, Kapushesky M, Nikkilä J, Parkinson H, Goncalves A, Huber W, Ukkonen E, Brazma A. A global map of human gene expression. Nat Biotechnol 2010, 28(4):322-4
+}
+\references{
+	Lukk M, Kapushesky M, Nikkilä J, Parkinson H, Goncalves A, Huber W, Ukkonen E, Brazma A. A global map of human gene expression. Nat Biotechnol 2010, 28(4):322-4
+	Eklund AC, Szallasi Z: Correction of technical bias in clinical microarray data improves concordance with known biological information. Genome Biol 2008, 9:R26.
+}
+\examples{
+data(E_MTAB_62)
+exprs(E_MTAB_62)[1:5,1:5]
+head(pData(E_MTAB_62))
+}
+\keyword{datasets}
